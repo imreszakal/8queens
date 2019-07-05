@@ -96,7 +96,7 @@ SearchForAllSolutionsSampleSat()
 end = time.time()
 
 print()
-print('Full size solutions:')
+print('Full size solutions:', len(results))
 for result in results:
     print(result)
 
