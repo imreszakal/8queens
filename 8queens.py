@@ -2,7 +2,7 @@
 
 from ortools.sat.python import cp_model
 import time
-d
+
 import numpy as np
 from matplotlib import pyplot as plt
 
