@@ -6,8 +6,9 @@ import time
 import numpy as np
 from matplotlib import pyplot as plt
 
+table_size = 8 # Select table size
+
 start = time.time()
-table_size = 8
 model = cp_model.CpModel()
 
 queen = {}
@@ -21,11 +22,11 @@ for i in horizontal:
 cover = {}
 for i in horizontal:
     for j in vertical:
-        d1 = [[i+k,j+k] for k in range(-7, 8) if
-                (i+k>=0 and i+k<=7 and j+k>=0 and j+k<=7)]
+        d1 = [[i+k,j+k] for k in range(-table_size+1, table_size) if
+                (i+k>=0 and i+k<=table_size-1 and j+k>=0 and j+k<=table_size-1)]
         d1.remove([i,j])
-        d2 = [[i+k,j-k] for k in range(-7, 8) if
-                (i+k>=0 and i+k<=7 and j-k>=0 and j-k<=7)]
+        d2 = [[i+k,j-k] for k in range(-table_size+1, 8) if
+                (i+k>=0 and i+k<=table_size-1 and j-k>=0 and j-k<=table_size-1)]
         d2.remove([i,j])
         d = d1 + d2
 
