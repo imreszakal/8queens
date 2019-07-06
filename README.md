@@ -1,5 +1,5 @@
 # 8queens
-Eight queens puzzle solution with Google OR-Tools in Python
+Eight queens puzzle (N-queens problem) solution with Google OR-Tools in Python
 
 
 8queens_all_feasable_solutions.py 	
