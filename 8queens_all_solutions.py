@@ -3,9 +3,6 @@
 from ortools.sat.python import cp_model
 import time
 
-import numpy as np
-from matplotlib import pyplot as plt
-
 table_size = 8 # Select table size
 
 print('.......................................................................')
@@ -22,24 +19,16 @@ class VarArraySolutionPrinter(cp_model.CpSolverSolutionCallback):
     def __init__(self, variables):
         cp_model.CpSolverSolutionCallback.__init__(self)
         self.__variables = variables
-        self.__solution_count = 0
 
     def on_solution_callback(self):
-        self.__solution_count += 1
         counter = 0
         result = ''
         for v in self.__variables:
             if self.Value(v) == 1:
                 counter += 1
                 result += str(v) + ' '
-                # print(v, end=' ')
         if counter == table_size:
             results.append(result)
-        # print()
-
-    def solution_count(self):
-        return self.__solution_count
-
 
 def SearchForAllSolutionsSampleSat():
     """Showcases calling the solver to search for all solutions."""
@@ -75,10 +64,14 @@ def SearchForAllSolutionsSampleSat():
 
             cover[(i,j)] = d + hv # [i,j] is not in it
 
+    # Horizontal, vertical and diagonal cover
     for i in horizontal:
         for j in vertical:
             for k in cover[(i,j)]:
                 model.Add(queen[(i,j)] + queen[(k[0],k[1])] <= 1)
+
+    # Only N-size solutions
+    model.Add(sum(queen[(i,j)] for i in horizontal for j in vertical) == table_size)
 
     # Create a solver and solve.
     solver = cp_model.CpSolver()
@@ -86,20 +79,16 @@ def SearchForAllSolutionsSampleSat():
             for i in horizontal for j in vertical])
     status = solver.SearchForAllSolutions(model, solution_printer)
 
-    # print()
-    # print('Status = %s' % solver.StatusName(status))
-    # print('Number of solutions found: %i' % solution_printer.solution_count())
-
-
 SearchForAllSolutionsSampleSat()
 
 end = time.time()
 
 print()
-print('Full size solutions:', len(results))
 for result in results:
     print(result)
 
+print()
+print('Full size solutions:', len(results))
 print()
 print('Time:')
 print('{:.8f} seconds'.format(end - start))
